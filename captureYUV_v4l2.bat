@@ -1,14 +1,14 @@
 @echo off
 
 rem Initialize default variables
-set svName=test
+set svName=theia
 set sizeW=1920
 set sizeH=1080
 set /A numPic=2
 
 if "%1"=="--help" (
 	@echo.
-	@echo Usage: capture_yuv.bat [yuvFileName] [-full] [-n N]
+	@echo Usage: captureYUV_v4l2.bat [yuvFileName] [-full] [-n N]
 	@echo.
 	@echo Descriptions
 	@echo   To capture and dump YUV images from Theia camera.
