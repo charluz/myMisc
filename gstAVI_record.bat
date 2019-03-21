@@ -20,7 +20,7 @@ if "%1"=="--help" (
 	@echo   To record and dump video clips from Theia camera.
 	@echo.
 	@echo   aviName : name of the video clip
-	@echo      Optional. If aviName is not specified, the dafault avi name is theia_1080p.
+	@echo      Optional. If aviName is not specified, the dafault avi name is "theia".
 	@echo.
 	@echo   -crop : FoV control "(cropped)"
 	@echo      Optional. The defualt FoV is full. If -crop is specified, the recorded video is cropped from the upper left corner.

@@ -20,7 +20,7 @@ if "%1"=="--help" (
 	@echo      For the sake of pull all captured JPG files, a sub-folder will be created in camera under /tmp directory.
 	@echo      If the sub-folder name is not specified, it will use "gstJPG" as default name of the sub-folder.
 	@echo.
-	@echo   -full : to capture full size "(2688x1944)" YUV image.
+	@echo   -full : to capture full size "(2688x1944)" image.
 	@echo      optional, size of 1920x1080 will be set by default.
 	@echo.
 	goto :_exit
