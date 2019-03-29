@@ -1,4 +1,41 @@
 <!-- =============================== -->
+# cam_CaptureTool.bat #
+<!-- =============================== -->
+使用 MTK Capture Tool 指令拍照的批次指令稿。
+
+單獨使用(不帶參數)，預設會拍 1 張 2688x1944 JPG 存在 camera /data/vendor/camera_dump 目錄，並且從 camera 抓回存到當下目錄。
+預設的照片曝光是 33.333ms，Sensor / ISP Gain 都是 x1。
+
+如果要指定曝光時間，指令如下:
+cmd> cmd_CaptureTool.bat -exp N
+( N 是曝光時間，單位 us)
+
+如果要指定 Sensor Gain，指令如下:
+cmd> cmd_CaptureTool.bat -sgain N
+( N 是 Gain，單位 1024 = x1 gain)
+
+如果要指定 ISP Gain，指令如下:
+cmd> cmd_CaptureTool.bat -igain N
+( N 是 Gain，單位 1024 = x1 gain)
+
+如果要指定拍照張數，指令如下:
+cmd> cmd_CaptureTool.bat -num N
+( N 是張數 )
+
+如果要指定照片抓回來存放位置，指令如下:
+cmd> cmd_CaptureTool.bat localDir
+( localDir 是目錄路徑、名稱 )
+
+
+cam_CaptureTool.bat 拍照後預設不會清除 Camera 以及 local (PC)
+下的照片。如果持續拍照，一者是 Camera 端空間可不足，再者拍照後抓檔
+時間也會跟這變長。以下指令可以在拍照前清除 Camera /data/vendor/camera_dump 以及本地端目錄裡面的舊照片，如此便可確保每次抓回的都是當次指令拍的照片。
+
+cmd> cmd_CaptureTool.bat -clear
+
+
+
+<!-- =============================== -->
 # captureYUV_v4l2.bat #
 <!-- =============================== -->
 
