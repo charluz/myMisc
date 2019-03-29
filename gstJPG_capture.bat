@@ -6,12 +6,15 @@ REM --------------------------------------------
 
 REM  dxName : to create a sub-folder in /tmp to collect JPG files.
 set dxName=gstJPG
-set sizeW=1920
-set sizeH=1080
+set sizeW=2688
+set sizeH=1944
+set exp=33333
+set sgain=1024
+set igain=1024
 
 if "%1"=="--help" (
 	@echo.
-	@echo Usage: gstJPG_capture.bat [dxName] [-full]
+	@echo Usage: gstJPG_capture.bat [dxName] [-crop]
 	@echo.
 	@echo Descriptions
 	@echo   To capture and dump YUV images from Theia camera.
@@ -20,8 +23,14 @@ if "%1"=="--help" (
 	@echo      For the sake of pull all captured JPG files, a sub-folder will be created in camera under /tmp directory.
 	@echo      If the sub-folder name is not specified, it will use "gstJPG" as default name of the sub-folder.
 	@echo.
-	@echo   -full : to capture full size "(2688x1944)" image.
-	@echo      optional, size of 1920x1080 will be set by default.
+	@echo   -crop : the crop size to capture.
+	@echo      Optional. If the option, "-crop W H", is given, the output image is cropped from the full size image.
+	@echo.
+	@echo   -exp X : Optional, to specify the shutter time in ms.
+	@echo.
+	@echo   -sgain SG : Optional, to specify the sensor gain in 1024 based value.
+	@echo.
+	@echo   -igain IG : Optional, to specify the ISP gain in 1024 based value.
 	@echo.
 	goto :_exit
 )
@@ -30,9 +39,28 @@ if "%1"=="--help" (
 
 :loop_args
 if not "%1"=="" (
-	if "%1"=="-full" (
-		set sizeW=2688
-		set sizeH=1944
+	if "%1"=="-crop" (
+		set sizeW=%2
+		set sizeH=%3
+		shift & shift
+		goto :next_arg
+	)
+	
+	if "%1"=="-exp" (
+		set exp=%2
+		shift
+		goto :next_arg
+	)
+
+	if "%1"=="-sgain" (
+		set sgain=%2
+		shift
+		goto :next_arg
+	)
+
+	if "%1"=="-igain" (
+		set igain=%2
+		shift
 		goto :next_arg
 	)
 
@@ -44,7 +72,7 @@ if not "%1"=="" (
 )
 
 
-rem DEBUG ONLY
+REM DEBUG ONLY
 goto :roll_up_sleeves
 echo dxName = %dxName%
 echo sizeW = %sizeW%
@@ -68,14 +96,15 @@ set camDir=/tmp/%dxName%
 
 rem adb shell setprop debug.mapping_mgr.enable 3
 
-rem adb shell setprop vendor.debug.ae_mgr.enable 1
-rem adb shell setprop vendor.debug.ae_mgr.preview.update 1
-rem rem adb shell setprop vendor.debug.ae_mgr.shutter 33000 
-rem adb shell setprop vendor.debug.ae_mgr.shutter 16500 
-rem adb shell setprop vendor.debug.ae_mgr.sensorgain 1024
-rem adb shell setprop vendor.debug.ae_mgr.ispgain 1024
-rem adb shell setprop vendor.debug.camera.dump.JpegNode 1
-rem adb shell setprop vendor.debug.capture.forceZsd 1
+
+adb shell setprop vendor.debug.ae_mgr.enable 1
+adb shell setprop vendor.debug.ae_mgr.preview.update 1
+adb shell setprop vendor.debug.ae_mgr.shutter %exp%
+adb shell setprop vendor.debug.ae_mgr.sensorgain %sgain%
+adb shell setprop vendor.debug.ae_mgr.ispgain %igain%
+adb shell setprop vendor.debug.camera.dump.JpegNode 1
+adb shell setprop vendor.debug.capture.forceZsd 1
+
 
 adb shell mkdir -p %camDir%
 adb shell rm -f %camDir%/*

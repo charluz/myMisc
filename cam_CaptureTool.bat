@@ -6,7 +6,7 @@ REM --------------------------------------------
 
 REM  dxName : the folder to store the images
 set dxName=.
-set exp=33000
+set exp=33333
 set sgain=1024
 set igain=1024
 set /A num=1
@@ -116,14 +116,15 @@ adb shell setprop vendor.debug.camera.dump.JpegNode 1
 adb shell setprop vendor.debug.capture.forceZsd 1
 
 adb shell setprop vendor.debug.isp_mgr_awb.enable 1
+adb shell setprop debug.cam.drawid 1 
 
-adb shell getprop vendor.debug.ae_mgr.enable
-adb shell getprop vendor.debug.ae_mgr.preview.update
-adb shell getprop vendor.debug.ae_mgr.shutter
-adb shell getprop vendor.debug.ae_mgr.sensorgain
-adb shell getprop vendor.debug.ae_mgr.ispgain
-adb shell getprop vendor.debug.camera.dump.JpegNode
-adb shell getprop vendor.debug.capture.forceZsd
+REM adb shell getprop vendor.debug.ae_mgr.enable
+REM adb shell getprop vendor.debug.ae_mgr.preview.update
+REM adb shell getprop vendor.debug.ae_mgr.shutter
+REM adb shell getprop vendor.debug.ae_mgr.sensorgain
+REM adb shell getprop vendor.debug.ae_mgr.ispgain
+REM adb shell getprop vendor.debug.camera.dump.JpegNode
+REM adb shell getprop vendor.debug.capture.forceZsd
 
 
 for /L %%a in (1 1 %num%) do (

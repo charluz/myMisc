@@ -10,6 +10,9 @@ set fstOrderSizeW=2688
 set fstOrderSizeH=1944
 set sizeW=1920
 set sizeH=1080
+set exp=33333
+set sgain=1024
+set igain=1024
 set aviName=theia
 
 if "%1"=="--help" (
@@ -20,10 +23,16 @@ if "%1"=="--help" (
 	@echo   To record and dump video clips from Theia camera.
 	@echo.
 	@echo   aviName : name of the video clip
-	@echo      Optional. If aviName is not specified, the dafault avi name is "theia".
+	@echo      Optional. If aviName is not specified, the dafault avi name is theia_1080p.
 	@echo.
 	@echo   -crop : FoV control "(cropped)"
 	@echo      Optional. The defualt FoV is full. If -crop is specified, the recorded video is cropped from the upper left corner.
+	@echo.
+	@echo   -exp X : Optional, to specify the shutter time in ms.
+	@echo.
+	@echo   -sgain SG : Optional, to specify the sensor gain in 1024 based value.
+	@echo.
+	@echo   -igain IG : Optional, to specify the ISP gain in 1024 based value.
 	@echo.
 	goto :_exit
 )
@@ -35,6 +44,24 @@ if not "%1"=="" (
 	if "%1"=="-crop" (
 		set fstOrderSizeW=1920
 		set fstOrderSizeH=1080
+		goto :next_arg
+	)
+	
+	if "%1"=="-exp" (
+		set exp=%2
+		shift
+		goto :next_arg
+	)
+
+	if "%1"=="-sgain" (
+		set sgain=%2
+		shift
+		goto :next_arg
+	)
+
+	if "%1"=="-igain" (
+		set igain=%2
+		shift
 		goto :next_arg
 	)
 
@@ -71,14 +98,15 @@ set camDir=/tmp/%dxName%
 
 rem adb shell setprop debug.mapping_mgr.enable 3
 
-rem adb shell setprop vendor.debug.ae_mgr.enable 1
-rem adb shell setprop vendor.debug.ae_mgr.preview.update 1
-rem rem adb shell setprop vendor.debug.ae_mgr.shutter 33000 
-rem adb shell setprop vendor.debug.ae_mgr.shutter 16500 
-rem adb shell setprop vendor.debug.ae_mgr.sensorgain 1024
-rem adb shell setprop vendor.debug.ae_mgr.ispgain 1024
-rem adb shell setprop vendor.debug.camera.dump.JpegNode 1
-rem adb shell setprop vendor.debug.capture.forceZsd 1
+adb shell setprop vendor.debug.ae_mgr.enable 1
+adb shell setprop vendor.debug.ae_mgr.preview.update 1
+adb shell setprop vendor.debug.ae_mgr.shutter %exp%
+adb shell setprop vendor.debug.ae_mgr.sensorgain %sgain%
+adb shell setprop vendor.debug.ae_mgr.ispgain %igain%
+adb shell setprop vendor.debug.camera.dump.JpegNode 1
+adb shell setprop vendor.debug.capture.forceZsd 1
+
+
 
 adb shell mkdir -p %camDir%
 adb shell rm -f %camDir%/*
