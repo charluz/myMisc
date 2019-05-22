@@ -10,11 +10,11 @@ setprop vendor.debug.camera.p2.dump 1
 setprop vendor.debug.camera.dump.JpegNode 1
 
 if false; then
-#-- for TSF Dump
-setprop vendor.debug.lsc_mgr.log 256
+    #-- for TSF Dump
+    setprop vendor.debug.lsc_mgr.log 256
 
-mkdir -p /sdcard/camera_dump
-chmod -R 755 /sdcard
+    mkdir -p /sdcard/camera_dump
+    chmod -R 755 /sdcard
 fi
 
 
